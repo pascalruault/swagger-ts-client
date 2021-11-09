@@ -22,6 +22,7 @@ export interface IProperty{
     typeName: string;
     required: string;
     enumValue?: Array<string | boolean | number | {}>;
+    additionalTypeNameInfo?: TypeNameInfo;
 }
 
 export interface ISwaggerDefinition{
@@ -120,7 +121,11 @@ export class TypeBuilder{
                         typeName = TypeNameInfo.fromSwaggerTypeName(type.typeNameInfo.partialTypeName + changeCase.pascalCase(propertyName));
                         this.inlineTypes.set(typeName.fullTypeName, prop);
                     }
-                    type.addProperty(propertyName, typeName, required.indexOf(propertyName) != -1, prop.enum);
+                    let additionalTypeNameInfo;
+                    if (prop.additionalProperties) {
+                        additionalTypeNameInfo = TypeNameInfo.getTypeNameInfoFromSchema(prop.additionalProperties);
+                    }
+                    type.addProperty(propertyName, typeName, required.indexOf(propertyName) != -1, prop.enum, additionalTypeNameInfo);
                 }
             }
             return;

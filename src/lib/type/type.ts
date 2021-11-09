@@ -27,7 +27,7 @@ export class Type  implements IType{
         return this.typeNameInfo.partialTypeName;
     }
 
-    public addProperty(propertyName: string, propertyType: TypeNameInfo, required: boolean, enumValue?: Array<string | boolean | number | {}>) {
+    public addProperty(propertyName: string, propertyType: TypeNameInfo, required: boolean, enumValue?: Array<string | boolean | number | {}>, additionalTypeNameInfo?: TypeNameInfo) {
         if (this.isGeneric){
             propertyType = this.typeNameInfo.replaceWithGenericType(propertyType);
         }
@@ -37,6 +37,7 @@ export class Type  implements IType{
                 typeName: propertyType.fullTypeName,
                 required: required ? "" : "?",
                 enumValue,
+                additionalTypeNameInfo,
             },
         );
     }
